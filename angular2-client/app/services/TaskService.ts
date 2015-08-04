@@ -1,6 +1,7 @@
 import {$http} from "services/http";
 import {REST_HOST} from "../config";
 import {Task} from '../components/tasks/task';
+import {AuthenticationService} from 'services/AuthenticationService';
 
 export interface TaskService {
 	getTasks(): Promise<any>;
@@ -15,17 +16,16 @@ export class TaskServiceImpl implements TaskService {
 	 * @returns a list of Task objects as a JavaScript Array
 	 */
 	public getTasks(): Promise<any> {
-		let token = localStorage.getItem("jwt");
-		return $http.get(REST_HOST + "/api/tasks/tim", token);
+		return $http.get(REST_HOST + "/api/tasks/" + this.getUserData().username + "/", this.getUserData().token);
 	}
 
 	/**
 	 * @param task is a Task object
 	 * @returns server _id of newly created task
 	 */
-	public addTask(task: Task):Promise<any> {
-		let token = localStorage.getItem("jwt");
-		return $http.post(REST_HOST + "/api/tasks/tim", task, token);
+	public addTask(task: Task): Promise<any> {
+		task.setUsername(this.getUserData().username);
+		return $http.post(REST_HOST + "/api/tasks/" + this.getUserData().username + "/", task, this.getUserData().token);
 	}
 
 	/**
@@ -33,8 +33,8 @@ export class TaskServiceImpl implements TaskService {
 	 * @returns server _id of updated task
 	 */
 	public updateTask(task: Task): Promise<any> {
-		let token = localStorage.getItem("jwt");
-		return $http.put(REST_HOST + "/api/tasks/tim", task, token);
+		task.setUsername(this.getUserData().username);
+		return $http.put(REST_HOST + "/api/tasks/" + this.getUserData().username + "/" + task._id + "/", task, this.getUserData().token);
 	}
 
 	/**
@@ -42,8 +42,13 @@ export class TaskServiceImpl implements TaskService {
 	 * @returns server _id of deleted task
 	 */
 	public deleteTask(task: Task): Promise<any> {
+		task.setUsername(this.getUserData().username);
+		return $http.delete(REST_HOST + "/api/tasks/" + this.getUserData().username + "/" + task._id + "/", task, this.getUserData().token);
+	}
+
+	private getUserData() {
 		let token = localStorage.getItem("jwt");
-		return $http.delete(REST_HOST + "/api/tasks/tim", task, token);
+		return { username: new AuthenticationService().getUsername(token), token: token };
 	}
 }
 
@@ -68,7 +73,7 @@ export class TaskServiceOfflineImpl implements TaskService {
 			}
 		);
 	}
-	public addTask(task:Task): Promise<any> {
+	public addTask(task: Task): Promise<any> {
 		let nextId = this.tasks.length++;
 		task.setId(nextId);
 		return new Promise(

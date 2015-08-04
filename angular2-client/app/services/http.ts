@@ -1,5 +1,6 @@
 
 // TODO make token an optional parameter with ''?''
+// TODO convert to class for consistency
 
 export const $http = {
     get: function(url: string, token: string) {

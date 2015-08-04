@@ -1,9 +1,0 @@
-#!/usr/bin/busybox sh
-
-set -ex
-
-rest_host="$1"
-
-echo "exports.REST_HOST = \"$rest_host\";" >/www/config.js
-
-exec static
