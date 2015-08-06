@@ -62,42 +62,49 @@ server.post("/api/token/", jsonParser, function(req, res) {
 
 server.get("/api/tasks/:username/", function(req, res) {
     console.log("looking at data for: " + req.params.username);
-    Task.find({"username": req.params.username}, function (err, tasks) {
+    Task.find({username: req.params.username}, function (err, tasks) {
         if (err) {
             console.log(err);
         }
-        var tasksResult = {"actionResult": tasks};
-        res.json(tasksResult);
-        res.end();
+        var result = {"actionResult": tasks};
+        console.dir(result);
+        res.end(JSON.stringify(result));
     });
 });
 
-server.post("/api/tasks/:username/", function(req, res) {
+server.post("/api/tasks/:username/", jsonParser, function(req, res) {
     var task = new Task(req.body);
     task._id = Math.floor(Math.random() * 111111);
-    return task.save(function(err) {
+    task.save(function(err, pTask) {
         if (!err) {
-            console.log("updated " + task._id + " into MongoDB");
+            console.log("inserted '" + pTask.title + "' into MongoDB");
         } else {
             console.log(err);
         }
-        var obj = {"actionResult":{"_id": "nodejs" + nextId}};
-        // TODO FIX cors headers
-        res.header("Content-Type", "application/json");
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "X-Requested-With");
-        res.header("Access-Control-Allow-Methods", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
-        res.header("Access-Control-Allow-Headers", "Authorization, Content-Type");
-        res.header("Allow", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
-        return res.send(obj);
+        var result = {"actionResult":{"_id": "nodejs" + pTask._id}};
+        res.end(JSON.stringify(result));
     });
 });
 
 // One Task for one User
 
 server.put("/api/tasks/:username/:id/", jsonParser, function(req, res) {
-    console.log(req.body);
-    res.end();
+    var task = new Task(req.body);
+    task._id = req.params.id;
+    // first load task from db, then overwrite
+    Task.findOne({_id: req.params.id}, function (err, foundTask) {
+        foundTask.title = task.title;
+        foundTask.description = task.description;
+        foundTask.save(function(err) {
+            if (!err) {
+                console.log("updated '" + task.title + "' into MongoDB");
+            } else {
+                console.log(err);
+            }
+            var result = {"actionResult":{"_id": "nodejs" + task._id}};
+            res.end(JSON.stringify(result));
+        });
+    });
 });
 
 server.delete("/api/tasks/:username/:id/", jsonParser, function(req, res) {

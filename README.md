@@ -5,9 +5,16 @@ Basic TODO application,  microservices with node.js, websockets and angular2
 
 ISSUES
 ======
- - Introduce multi user with roles
+ - Introduce websockets
+ - Introduce roles
  - server.js as .ts 
  - Upgrade to Latest Angular alpha (recurring task)
- - Use mongo from node 
- - Introduce websockets
  - Perhaps introduce CQRS 
+ 
+MONGODB
+=======
+ - mongo
+ - use taskmanager
+ - db.tasks.count()
+ - db.tasks.save({"description":"Task description","_id":"1","username":"tim","title":"Report an issue"});
+ - db.tasks.find().forEach(printjson);
