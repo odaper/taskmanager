@@ -74,6 +74,7 @@ export class Tasks {
 
 	deleteTask(event: any): void {
 		event.preventDefault(); // prevent native page refresh
+		console.log("tasks.ts delete " + this.task._id);
 		this.taskService.deleteTask(this.task).then((obj) => {
 			this.eventManager.publish("tasksResult", [true, "Deleted task '" + this.task._id + "'"]);
 			// findIndex does not work on Task[]

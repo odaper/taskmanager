@@ -25,7 +25,7 @@ export class TaskServiceImpl implements TaskService {
 	 */
 	public addTask(task: Task): Promise<any> {
 		task.setUsername(this.getUserData().username);
-		return $http.post(REST_HOST + "/api/tasks/" + this.getUserData().username + "/", task, this.getUserData().token);
+		return $http.post(REST_HOST + "/api/tasks/" + this.getUserData().username + "/", task + "/", this.getUserData().token);
 	}
 
 	/**
@@ -42,7 +42,6 @@ export class TaskServiceImpl implements TaskService {
 	 * @returns server _id of deleted task
 	 */
 	public deleteTask(task: Task): Promise<any> {
-		task.setUsername(this.getUserData().username);
 		return $http.delete(REST_HOST + "/api/tasks/" + this.getUserData().username + "/" + task._id + "/", task, this.getUserData().token);
 	}
 

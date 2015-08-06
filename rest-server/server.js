@@ -92,7 +92,7 @@ server.put("/api/tasks/:username/:id/", jsonParser, function(req, res) {
     var task = new Task(req.body);
     task._id = req.params.id;
     // first load task from db, then overwrite
-    Task.findOne({_id: req.params.id}, function (err, foundTask) {
+    Task.findOne({_id: req.params.id, username: req.params.username}, function (err, foundTask) {
         foundTask.title = task.title;
         foundTask.description = task.description;
         foundTask.save(function(err) {
@@ -109,6 +109,14 @@ server.put("/api/tasks/:username/:id/", jsonParser, function(req, res) {
 
 server.delete("/api/tasks/:username/:id/", jsonParser, function(req, res) {
     console.log(req.body);
+    Task.findOne({_id: req.params.id, username: req.params.username}).exec(function (err, task) {
+        if (!err) {
+            console.log("deleted '" + req.params.id + "' from MongoDB");
+            task.remove();
+        } else {
+            console.log(err);
+        }
+    });
     res.end();
 });
 
