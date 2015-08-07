@@ -1,8 +1,9 @@
 var express = require("express");
-var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var jwt = require('jsonwebtoken');
+var taskService = require("./TaskService");
+//var q = require("q");
 
 var server = express();
 
@@ -20,25 +21,6 @@ function setHeaders(res) {
     res.header("Allow", "HEAD,GET,POST,PUT,DELETE,OPTIONS");
     return res;
 };
-
-mongoose.connect('mongodb://localhost/taskmanager');
-
-var taskSchema = mongoose.Schema({
-    _id: String,
-    description: String,
-    username: String,
-    title: String
-});
-var Task = mongoose.model('Task', taskSchema);
-
-// TODO store hash for better security
-var userSchema = mongoose.Schema({
-    _id: String,
-    username: String,
-    password: String,
-    role_id: Number
-});
-var User = mongoose.model('User', userSchema);
 
 /*
 var tasks = [
@@ -62,27 +44,23 @@ server.post("/api/token/", jsonParser, function(req, res) {
 
 server.get("/api/tasks/:username/", function(req, res) {
     console.log("looking at data for: " + req.params.username);
-    Task.find({username: req.params.username}, function (err, tasks) {
-        if (err) {
-            console.log(err);
-        }
+
+    taskService.findTasks(req.params.username).then(function(tasks) {
         var result = {"actionResult": tasks};
         console.dir(result);
         res.end(JSON.stringify(result));
+    }, function(error) {
+        console.log(error);
     });
 });
 
 server.post("/api/tasks/:username/", jsonParser, function(req, res) {
     var task = new Task(req.body);
-    task._id = Math.floor(Math.random() * 111111);
-    task.save(function(err, pTask) {
-        if (!err) {
-            console.log("inserted '" + pTask.title + "' into MongoDB");
-        } else {
-            console.log(err);
-        }
-        var result = {"actionResult":{"_id": "nodejs" + pTask._id}};
+    taskService.addTask(req.params.username, task).then(function(pTask) {
+        var result = {"actionResult":{"_id": pTask._id}};
         res.end(JSON.stringify(result));
+    }, function(error) {
+        console.log(error);
     });
 });
 
@@ -91,33 +69,22 @@ server.post("/api/tasks/:username/", jsonParser, function(req, res) {
 server.put("/api/tasks/:username/:id/", jsonParser, function(req, res) {
     var task = new Task(req.body);
     task._id = req.params.id;
-    // first load task from db, then overwrite
-    Task.findOne({_id: req.params.id, username: req.params.username}, function (err, foundTask) {
-        foundTask.title = task.title;
-        foundTask.description = task.description;
-        foundTask.save(function(err) {
-            if (!err) {
-                console.log("updated '" + task.title + "' into MongoDB");
-            } else {
-                console.log(err);
-            }
-            var result = {"actionResult":{"_id": "nodejs" + task._id}};
-            res.end(JSON.stringify(result));
-        });
+    taskService.updateTask(req.params.username, task).then(function(pTask) {
+        var result = {"actionResult":{"_id": pTask._id}};
+        res.end(JSON.stringify(result));
+    }, function(error) {
+        console.log(error);
     });
 });
 
 server.delete("/api/tasks/:username/:id/", jsonParser, function(req, res) {
     console.log(req.body);
-    Task.findOne({_id: req.params.id, username: req.params.username}).exec(function (err, task) {
-        if (!err) {
-            console.log("deleted '" + req.params.id + "' from MongoDB");
-            task.remove();
-        } else {
-            console.log(err);
-        }
+    taskService.deleteTask(req.params.username, task).then(function(pTask) {
+        var result = {"actionResult":{"_id": req.params._id}};
+        res.end(JSON.stringify(result));
+    }, function(error) {
+        console.log(error);
     });
-    res.end();
 });
 
 // All Logitems for all Users
