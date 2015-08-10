@@ -43,8 +43,8 @@ server.post("/api/token/", jsonParser, function(req, res) {
 // All Tasks for one User
 
 server.get("/api/tasks/:username/", function(req, res) {
-    console.log("looking at data for: " + req.params.username);
-
+    console.log("looking up data for: " + req.params.username);
+    // TODO check JWT
     taskService.findTasks(req.params.username).then(function(tasks) {
         var result = {"actionResult": tasks};
         console.dir(result);
