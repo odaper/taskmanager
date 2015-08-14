@@ -42,12 +42,33 @@ wsServer.on('request', function(request) {
             // process WebSocket message
             console.log("onMessage: " + JSON.stringify(message));
             // TODO frontcontroller: check action/request-type and forward to handler
-
-            // broadcast message to all connected clients
-            var response = JSON.stringify({"actionResult": tasks});
-            for (var i = 0; i < clients.length; i++) {
-                console.dir(response);
-                clients[i].sendUTF(response);
+            var messageObj = JSON.parse(message.utf8Data);
+            var messageType = messageObj.messageType;
+            console.log("received a message: " + messageType);
+            switch (messageType) {
+                case "GET_TASKS_FOR_USER":
+                    // broadcast message to all connected clients
+                    var response = JSON.stringify({"messageType": "TASKS_FOR_USER", "tasks": tasks});
+                    for (var i = 0; i < clients.length; i++) {
+                        console.dir(response);
+                        clients[i].sendUTF(response);
+                    }
+                    break;
+                case "ADD_TASK":
+                    tasks.push(messageObj.task);
+                    // TODO what to respond? Send all tasks again?
+                    var response = JSON.stringify({"messageType": "TASKS_FOR_USER", "tasks": tasks});
+                    for (var i = 0; i < clients.length; i++) {
+                        console.dir(response);
+                        clients[i].sendUTF(response);
+                    }
+                    break;
+                case "UPDATE_TASK":
+                    // TODO iterate over tasks and replace the one with matching _id
+                    break;
+                case "DELETE_TASK":
+                    // TODO iterate over tasks and splice the one with matching _id
+                    break;
             }
         }
     });

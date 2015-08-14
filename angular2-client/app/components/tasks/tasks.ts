@@ -2,14 +2,14 @@ import {Component, View, NgFor, NgIf} from 'angular2/angular2';
 
 import {AuthenticationService} from '../../services/AuthenticationService';
 import {Task} from 'components/tasks/task';
-import {TaskServiceWebsocketsImpl} from '../../services/TaskService';
+import {TaskServiceWebsockets} from '../../services/TaskServiceWebsockets';
 import {EventManager} from "utils/eventbus/EventManager";
 
 import {formDirectives} from 'angular2/forms';
 
 @Component({
     selector: 'component-2',
-    viewInjector: [AuthenticationService, TaskServiceWebsocketsImpl]
+    viewInjector: [AuthenticationService, TaskServiceWebsockets]
 })
 @View({
     templateUrl: './components/tasks/tasks.html?v=<%= VERSION %>',
@@ -21,13 +21,13 @@ export class Tasks {
 	nrOfTasks: number;
     private eventManager: EventManager = EventManager.getInstance();
 
-    constructor(public authenticationService: AuthenticationService, public taskService: TaskServiceWebsocketsImpl) {
+    constructor(public authenticationService: AuthenticationService, public taskService: TaskServiceWebsockets) {
         console.log("tasks.ts constructor");
 
         if (this.authenticationService.isLoggedIn()) {
-            this.taskService.getTasks().then((obj) => {
+            this.taskService.sendMessage({messageType: "GET_TASKS_FOR_USER"}).then((obj) => {
 	            console.log("tasks got: " + JSON.stringify(obj));
-                this.tasks = obj.actionResult;
+                this.tasks = obj;
                 console.log("finished getting tasks: " + this.tasks.length);
 	            this.nrOfTasks = this.tasks.length;
             }).catch((error) => {
@@ -40,25 +40,27 @@ export class Tasks {
 
     saveTask(event: any): void {
         event.preventDefault(); // prevent native page refresh
+	    console.log("controller saveTask");
         if (this.task && (this.task._id == null || this.task._id == undefined)) {
 	        let newTask = this.task;
-	        this.taskService.addTask(newTask).then((obj) => {
+	        console.log("hier");
+	        this.taskService.sendMessage(this.taskService.sendMessage({messageType: "ADD_TASK", task: newTask}).then((obj) => {
 		        console.dir(obj);
-		        newTask.setId(obj.actionResult._id);
+		        newTask.setId(obj._id);
 		        console.log("before push: " + this.tasks.length);
 		        this.nrOfTasks = this.tasks.push(newTask);
 		        this.eventManager.publish("tasksResult", [true, "Added task '" + newTask.getId() + "'"]);
 		        this.task = new Task();
 	        }).catch((error) => {
 		        this.eventManager.publish("tasksResult", [false, error.message]);
-	        });
+	        }));
         } else {
-	        this.taskService.updateTask(this.task).then((obj) => {
+	        this.taskService.sendMessage(this.taskService.sendMessage({messageType: "UPDATE_TASK", task: this.task}).then((obj) => {
 		        this.eventManager.publish("tasksResult", [true, "Updated task '" + this.task._id + "'"]);
 		        this.task = new Task();
 	        }).catch((error) => {
 		        this.eventManager.publish("tasksResult", [false, error.message]);
-	        });
+	        }));
         }
     }
 
@@ -76,7 +78,7 @@ export class Tasks {
 	deleteTask(event: any): void {
 		event.preventDefault(); // prevent native page refresh
 		console.log("tasks.ts delete " + this.task._id);
-		this.taskService.deleteTask(this.task).then((obj) => {
+		this.taskService.sendMessage({messageType: "DELETE_TASK", task: this.task}).then((obj) => {
 			this.eventManager.publish("tasksResult", [true, "Deleted task '" + this.task._id + "'"]);
 			// findIndex does not work on Task[]
 			// this.tasks.splice(this.tasks.findIndex(_task => _task._id == this.task._id));

@@ -5,9 +5,13 @@ Basic TODO application,  microservices with node.js, websockets and angular2
 
 ISSUES
 ======
- - Introduce websockets
+ - Websockets
+  - Better message protocol
+  - Server side messagerouting via frontcontroller
+  - Use Mongo from frontcontroller/serviceobject
+ - Put Users in database
  - Introduce roles
- - server.js as .ts 
+ - Use typescript on servers 
  - Upgrade to Latest Angular alpha (recurring task)
  - Perhaps introduce CQRS 
  
