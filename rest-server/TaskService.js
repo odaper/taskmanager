@@ -1,6 +1,9 @@
 var db = require("./database");
 var q = require("q");
 
+//var _task = new Task();
+//_task.save();
+
 exports.findTasks = function(username) {
     var promise = q.defer();
     db.Task.find({username: username}, function (err, tasks) {
@@ -15,6 +18,7 @@ exports.findTasks = function(username) {
 }
 
 exports.addTask = function(username, task) {
+    console.dir(task);
     var promise = q.defer();
     task._id = Math.floor(Math.random() * 111111);
     task.save(function(err, pTask) {
@@ -28,7 +32,7 @@ exports.addTask = function(username, task) {
     return promise.promise;
 }
 
-exports.updateTas = function(username, task) {
+exports.updateTask = function(username, task) {
     var promise = q.defer();
     // first load task from db, then overwrite
     db.Task.findOne({_id: task.id, username: username}, function (err, foundTask) {

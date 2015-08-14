@@ -2,14 +2,14 @@ import {Component, View, NgFor, NgIf} from 'angular2/angular2';
 
 import {AuthenticationService} from '../../services/AuthenticationService';
 import {Task} from 'components/tasks/task';
-import {TaskServiceWebsocketsImpl} from '../../services/TaskService';
+import {TaskServiceRestImpl} from '../../services/TaskService';
 import {EventManager} from "utils/eventbus/EventManager";
 
 import {formDirectives} from 'angular2/forms';
 
 @Component({
     selector: 'component-2',
-    viewInjector: [AuthenticationService, TaskServiceWebsocketsImpl]
+    viewInjector: [AuthenticationService, TaskServiceRestImpl]
 })
 @View({
     templateUrl: './components/tasks/tasks.html?v=<%= VERSION %>',
@@ -21,7 +21,7 @@ export class Tasks {
 	nrOfTasks: number;
     private eventManager: EventManager = EventManager.getInstance();
 
-    constructor(public authenticationService: AuthenticationService, public taskService: TaskServiceWebsocketsImpl) {
+    constructor(public authenticationService: AuthenticationService, public taskService: TaskServiceRestImpl) {
         console.log("tasks.ts constructor");
 
         if (this.authenticationService.isLoggedIn()) {

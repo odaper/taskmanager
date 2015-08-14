@@ -24,8 +24,9 @@ export class TaskServiceRestImpl implements TaskService {
 	 * @returns server _id of newly created task
 	 */
 	public addTask(task: Task): Promise<any> {
+		console.log("TaskServiceRestImpl.addTask: " + task.title);
 		task.setUsername(this.getUserData().username);
-		return $http.post(REST_HOST + "/api/tasks/" + this.getUserData().username + "/", task + "/", this.getUserData().token);
+		return $http.post(REST_HOST + "/api/tasks/" + this.getUserData().username + "/", task, this.getUserData().token);
 	}
 
 	/**
@@ -51,44 +52,10 @@ export class TaskServiceRestImpl implements TaskService {
 	}
 }
 
-export class TaskServiceWebsocketsImpl implements TaskService {
-
-	private connection: WebSocket = new WebSocket("ws://127.0.0.1:8081");
-
-	getTasks(): Promise<any> {
-		return new Promise((resolve, reject) => {
-			this.connection.onopen = <Event>() => {
-				this.connection.send(JSON.stringify({type: "tasks"}));
-			};
-			this.connection.onmessage = <MessageEvent>(evt) => {
-				console.log('onmessage got something: ' + JSON.stringify(evt));
-				resolve(JSON.parse(evt.data));
-			};
-			this.connection.onerror = <ErrorEvent>(error) => {
-				console.log("onerror: " + error);
-				reject(error);
-			};
-		});
-	}
-
-	addTask(task:Task):Promise<any> {
-		return undefined;
-	}
-
-	updateTask(task:Task):Promise<any> {
-		return undefined;
-	}
-
-	deleteTask(task:Task):Promise<any> {
-		return undefined;
-	}
-
-}
-
 export class TaskServiceOfflineImpl implements TaskService {
 	private goRun: Task = new Task("Go for a run", 1);
 	private goShower: Task = new Task("Go have a shower", 2);
-	private tasks: Array<Task> = new Array<Task>();
+	private tasks: Array<Task> = [];
 
 	constructor() {
 		this.tasks.push(this.goRun);

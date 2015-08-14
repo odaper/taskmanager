@@ -2,8 +2,9 @@ var express = require("express");
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var jwt = require('jsonwebtoken');
+
 var taskService = require("./TaskService");
-//var q = require("q");
+var db = require("./database");
 
 var server = express();
 
@@ -55,7 +56,7 @@ server.get("/api/tasks/:username/", function(req, res) {
 });
 
 server.post("/api/tasks/:username/", jsonParser, function(req, res) {
-    var task = new Task(req.body);
+    var task = new db.Task(req.body);
     taskService.addTask(req.params.username, task).then(function(pTask) {
         var result = {"actionResult":{"_id": pTask._id}};
         res.end(JSON.stringify(result));
@@ -67,7 +68,7 @@ server.post("/api/tasks/:username/", jsonParser, function(req, res) {
 // One Task for one User
 
 server.put("/api/tasks/:username/:id/", jsonParser, function(req, res) {
-    var task = new Task(req.body);
+    var task = new db.Task(req.body);
     task._id = req.params.id;
     taskService.updateTask(req.params.username, task).then(function(pTask) {
         var result = {"actionResult":{"_id": pTask._id}};

@@ -5,7 +5,6 @@ Basic TODO application,  microservices with node.js, websockets and angular2
 
 ISSUES
 ======
- - Introduce websockets
  - Introduce roles
  - server.js as .ts 
  - Upgrade to Latest Angular alpha (recurring task)
