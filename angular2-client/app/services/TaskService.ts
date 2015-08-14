@@ -24,7 +24,6 @@ export class TaskServiceRestImpl implements TaskService {
 	 * @returns server _id of newly created task
 	 */
 	public addTask(task: Task): Promise<any> {
-		console.log("TaskServiceRestImpl.addTask: " + task.title);
 		task.setUsername(this.getUserData().username);
 		return $http.post(REST_HOST + "/api/tasks/" + this.getUserData().username + "/", task, this.getUserData().token);
 	}

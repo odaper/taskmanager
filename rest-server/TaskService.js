@@ -50,13 +50,12 @@ exports.updateTask = function(username, task) {
     return promise.promise;
 }
 
-exports.deleteTask = function(username, task) {
-    // TODO first load task from db, then overwrite
+exports.deleteTask = function(username, _id) {
     var promise = q.defer();
-    db.Task.findOne({_id: task.id, username: username}).exec(function (err, task) {
-        if (!err) {
+    db.Task.findOne({username: username, _id: _id}).exec(function (err, task) {
+        if (!err && task) {
             task.remove();
-            promise.resolve(id);
+            promise.resolve(_id);
         } else {
             console.log(err);
             promise.reject(err);

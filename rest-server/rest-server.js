@@ -80,7 +80,8 @@ server.put("/api/tasks/:username/:id/", jsonParser, function(req, res) {
 
 server.delete("/api/tasks/:username/:id/", jsonParser, function(req, res) {
     console.log(req.body);
-    taskService.deleteTask(req.params.username, task).then(function(pTask) {
+    // TODO lookup and then delete
+    taskService.deleteTask(req.params.username, req.params.id).then(function(pTask) {
         var result = {"actionResult":{"_id": req.params._id}};
         res.end(JSON.stringify(result));
     }, function(error) {
