@@ -5,6 +5,8 @@ Basic TODO application, microservices with mongodb, express, angular2 and node.j
 
 ISSUES
 ======
+ - tasks.ts: use ng-form-model with validators, 
+       see: https://angular.io/docs/js/latest/api/forms/NgFormModel-class.html and https://angular.io/docs/js/latest/api/forms/Validators-class.html         
  - Remove 'actionResult'
  - Introduce roles
  - server.js as .ts 
