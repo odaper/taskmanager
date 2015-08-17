@@ -1,31 +1,33 @@
 {
-    "version": "1.5.0",
-    "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
-        "declaration": false,
-        "noImplicitAny": false,
-        "removeComments": true,
-        "noLib": false,
-        "emitDecoratorMetadata": true,
-        "sourceMap": true
-    },
-    "files": [
-        "./app/app.ts",
-        "./app/components/*/*.ts",
-        "./app/utils/*.ts",
-        "./app/init.ts",
-        "./app/services/*/*.ts",
-        "./typings/angular2/angular2.d.ts",
-        "./typings/angular2/router.d.ts",
-        "./typings/custom.system.d.ts",
-        "./typings/es6-promise/es6-promise.d.ts",
-        "./typings/rx/rx-lite.d.ts",
-        "./typings/rx/rx.d.ts",
-        "./typings/tsd.d.ts"
-    ],
-    "filesGlob": [
-        "./app/**/*.ts",
-        "./typings/**/*.ts"
-    ]
+  "version": "1.5.3",
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true
+  },
+  "files": [
+    "./app/app.ts",
+    "./app/components/*/*.ts",
+    "./app/utils/*.ts",
+    "./app/init.ts",
+    "./app/services/*/*.ts",
+    "./tsd_typings/angular2/angular2.d.ts",
+    "./tsd_typings/angular2/router.d.ts",
+    "./tsd_typings/es6-promise/es6-promise.d.ts",
+    "./tsd_typings/rx/rx-lite.d.ts",
+    "./tsd_typings/rx/rx.d.ts",
+    "./tsd_typings/systemjs/systemjs.d.ts",
+    "./tsd_typings/tsd.d.ts"
+  ],
+  "filesGlob": [
+    "./app/**/*.ts",
+    "./tsd_typings/**/*.ts"
+  ],
+  "compileOnSave": false
 }

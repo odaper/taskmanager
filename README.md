@@ -1,13 +1,14 @@
 Taskmanager Node.js and Angular2
 ==================================
 
-Basic TODO application,  microservices with node.js, websockets and angular2
+Basic TODO application, microservices with mongodb, express, angular2 and node.js
 
 ISSUES
 ======
+ - Remove 'actionResult'
  - Introduce roles
  - server.js as .ts 
- - Upgrade to Latest Angular alpha (recurring task)
+ - Upgrade to Latest Angular2 alpha (recurring task)
  - Perhaps introduce CQRS 
  
 MONGODB

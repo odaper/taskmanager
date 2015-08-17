@@ -37,7 +37,7 @@ export class AuthenticationService {
         return jsonMeta.exp * 1000;
     }
 
-    getUsername(token: string): number {
+    getUsername(token: string): string {
         let tokenArr = token.split(".");
         let decodedMeta = this.base64Decode(tokenArr[1]);
         let jsonMeta = JSON.parse(decodedMeta);
@@ -48,7 +48,7 @@ export class AuthenticationService {
     * Call REST api to request a JWT token
     * @return Promise object
     */
-    getNewToken(username: String, password: String): Promise<any> {
+    getNewToken(username: string, password: string): Promise<any> {
         return $http.post(REST_HOST + "/api/token", {"username": username, "password" : password}, null);
     }
 

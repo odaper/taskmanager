@@ -18,7 +18,7 @@ export class Login {
         this.eventManager = EventManager.getInstance(); // singleton, do not use DI
     }
 
-    login(event, username: String, password: String) {
+    login(event, username: string, password: string) {
         event.preventDefault(); // prevent native page refresh
         console.log("user attempts to log in as " + username + " with " + password);
         this.authenticationService.getNewToken(username, password).then((data) => {

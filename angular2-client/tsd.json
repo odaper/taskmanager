@@ -2,23 +2,26 @@
   "version": "v4",
   "repo": "borisyankov/DefinitelyTyped",
   "ref": "master",
-  "path": "typings",
-  "bundle": "typings/tsd.d.ts",
+  "path": "tsd_typings",
+  "bundle": "tsd_typings/tsd.d.ts",
   "installed": {
     "es6-promise/es6-promise.d.ts": {
-      "commit": "69303fd9e52d8e0e97a92d096966aea5fb7630c5"
+      "commit": "8ebc099072402b1a80d205c3eece59bed963ad87"
     },
     "rx/rx.d.ts": {
-      "commit": "69303fd9e52d8e0e97a92d096966aea5fb7630c5"
+      "commit": "8ebc099072402b1a80d205c3eece59bed963ad87"
     },
     "rx/rx-lite.d.ts": {
-      "commit": "69303fd9e52d8e0e97a92d096966aea5fb7630c5"
+      "commit": "8ebc099072402b1a80d205c3eece59bed963ad87"
     },
     "angular2/angular2.d.ts": {
-      "commit": "69303fd9e52d8e0e97a92d096966aea5fb7630c5"
+      "commit": "f6c8ca47193fb67947944a3170912672ac3e908e"
     },
-    "jquery/jquery.d.ts": {
-      "commit": "69303fd9e52d8e0e97a92d096966aea5fb7630c5"
+    "angular2/router.d.ts": {
+      "commit": "f6c8ca47193fb67947944a3170912672ac3e908e"
+    },
+    "systemjs/systemjs.d.ts": {
+      "commit": "bd03c6ea51abde7d13e354908716c6373fc38b1f"
     }
   }
 }

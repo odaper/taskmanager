@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <base href="<%= APP_BASE %>">
+    <!-- ignore: Aplha 32 router fix -->
+    <script>baseElement = document.querySelector('base');baseElement.attr = baseElement.getAttribute;</script>
     <title>Angular2 client for task-manager</title>
     <meta name="description" content="Angular2 client for task-manager">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
@@ -16,6 +18,6 @@
     <!-- inject:js -->
     <!-- endinject -->
 
-    <script src="./init.js?v=<%= VERSION %>"></script>
+    <script src="<%= APP_BASE %>init.js?v=<%= VERSION %>"></script>
 </body>
 </html>

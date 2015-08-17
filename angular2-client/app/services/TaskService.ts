@@ -47,7 +47,7 @@ export class TaskServiceRestImpl implements TaskService {
 
 	private getUserData() {
 		let token = localStorage.getItem("jwt");
-		return { username: new AuthenticationService().getUsername(token), token: token };
+		return new User(<string>new AuthenticationService().getUsername(token), token);
 	}
 }
 
@@ -96,5 +96,15 @@ export class TaskServiceOfflineImpl implements TaskService {
 				resolve({actionResult: {_id: task._id}});
 			}
 		);
+	}
+}
+
+class User {
+	constructor(public username: string, public token: any) {}
+	public getUsername(): string {
+		return this.username;
+	}
+	public getToken(): any {
+		return this.token;
 	}
 }

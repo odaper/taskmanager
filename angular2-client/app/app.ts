@@ -1,4 +1,4 @@
-/// <reference path="../typings/tsd.d.ts" />
+/// <reference path="../tsd_typings/tsd.d.ts" />
 
 import {Component, View, bootstrap, NgFor} from 'angular2/angular2';
 import {RouteConfig, RouterOutlet, RouterLink, Router, routerInjectables} from 'angular2/router';

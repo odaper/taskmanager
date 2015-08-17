@@ -95,7 +95,7 @@ var Tasks = (function () {
             viewInjector: [AuthenticationService_1.AuthenticationService, TaskService_1.TaskServiceRestImpl]
         }),
         angular2_1.View({
-            templateUrl: './components/tasks/tasks.html?v=0.7.0',
+            templateUrl: './components/tasks/tasks.html?v=0.8.1',
             directives: [angular2_1.NgFor, angular2_1.NgIf, forms_1.formDirectives]
         }), 
         __metadata('design:paramtypes', [AuthenticationService_1.AuthenticationService, TaskService_1.TaskServiceRestImpl])
