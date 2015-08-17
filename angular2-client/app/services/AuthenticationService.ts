@@ -9,10 +9,7 @@ export class AuthenticationService {
 
     isLoggedIn(): boolean {
         let token = localStorage.getItem('jwt');
-        if(token && !this.isExpired(token)) {
-            return true;
-        }
-        return false;
+        return (token && !this.isExpired(token));
     }
 
     logIn(token: any): void{
