@@ -26,4 +26,10 @@ export class Task {
 	public setUsername(username: string):void {
 		this.username = username;
 	}
+
+    public isValid(): boolean {
+	    let valid: boolean = (this.title !== undefined && this.title != "");
+	    console.log("Task.isValid, title [" + this.title + "] isValid? " + valid);
+        return valid;
+    }
 }

@@ -25,7 +25,13 @@ export class TaskServiceRestImpl implements TaskService {
 	 */
 	public addTask(task: Task): Promise<any> {
 		task.setUsername(this.getUserData().username);
-		return $http.post(REST_HOST + "/api/tasks/" + this.getUserData().username + "/", task, this.getUserData().token);
+		if (task.isValid()) {
+			return $http.post(REST_HOST + "/api/tasks/" + this.getUserData().username + "/", task, this.getUserData().token);
+		} else {
+			return new Promise(function(resolve, reject) {
+				reject("task is not valid");
+			});
+		}
 	}
 
 	/**

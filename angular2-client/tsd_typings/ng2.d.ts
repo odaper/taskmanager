@@ -424,14 +424,57 @@ declare module "angular2/forms" {
 	class Validators {
 		static required(): any
 	}
+	class AbstractControl {
+		_value: any;
+		_status: string;
+		_errors: StringMap<string, any>;
+		_pristine: boolean;
+		_touched: boolean;
+		_parent: ControlGroup | ControlArray;
+		validator: Function;
+		_valueChanges: any;
+		constructor(validator: Function);
+		value: any;
+		status: string;
+		valid: boolean;
+		errors: StringMap<string, any>;
+		pristine: boolean;
+		dirty: boolean;
+		touched: boolean;
+		untouched: boolean;
+		valueChanges: any;
+		markAsTouched(): void;
+		markAsDirty({onlySelf}?: {
+			onlySelf?: boolean;
+		}): void;
+		setParent(parent: ControlGroup | ControlArray): void;
+		updateValidity({onlySelf}?: {
+			onlySelf?: boolean;
+		}): void;
+		updateValueAndValidity({onlySelf, emitEvent}?: {
+			onlySelf?: boolean;
+			emitEvent?: boolean;
+		}): void;
+		find(path: List<string | number> | string): AbstractControl;
+		getError(errorCode: string, path?: List<string>): any;
+		hasError(errorCode: string, path?: List<string>): boolean;
+		_updateValue(): void;
+	}
 	class ControlGroup {
 		value: any
 		controls: any
 		include(): any
 		exclude(): any
 	}
-	class Control {
-		valueChanges(): any
+	class Control extends AbstractControl {
+		_onChange: Function;
+		constructor(value?: any, validator?: Function);
+		updateValue(value: any, {onlySelf, emitEvent, emitModelToViewChange}?: {
+			onlySelf?: boolean;
+			emitEvent?: boolean;
+			emitModelToViewChange?: boolean;
+		}): void;
+		registerOnChange(fn: Function): void;
 	}
 	class ControlArray {
 		push(): any
