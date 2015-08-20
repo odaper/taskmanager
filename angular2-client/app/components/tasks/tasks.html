@@ -13,7 +13,7 @@
 
             <input [(ng-model)]="task.title" [ng-control]="titleControl" placeholder="description ..." required="required" />
 
-            <button (click)="saveTask($event)" [hidden]="!task.isValid()" class="pure-button pure-button-primary">save</button>
+            <button (click)="saveTask($event)" [hidden]="task.title == null" class="pure-button pure-button-primary">save</button>
 			<button (click)="clearTask($event)" [hidden]="task.title == null" class="pure-button">clear</button>
 			<button (click)="deleteTask($event)" [hidden]="task.title == null" class="pure-button">delete</button>
         </fieldset>
